@@ -81,8 +81,6 @@ The only dependency is [`obix-compiler-diagnostics`](https://github.com/obinexus
 npm install obix-compiler-ir
 ```
 
-> **Not yet on npm.** The OBIX packages are prepared for publication and are published only on the owner's authorisation; until then this is the command the published package will answer to.
-
 ## API surface
 
 - `obix-compiler-ir` — 25 value exports: `OBIX_IR_BINARY_OPERATORS`, `OBIX_IR_EXPRESSION_KINDS`, `OBIX_IR_FUNCTIONS`, `OBIX_IR_FUNCTION_ARITY`, `OBIX_IR_LOGICAL_OPERATORS`, `OBIX_IR_NODE_KINDS`, `OBIX_IR_PROP_TYPES`, `OBIX_IR_PROVENANCE_SCHEMA`, `OBIX_IR_REFERENCE_SCOPES`, `OBIX_IR_SCHEMA`, `OBIX_IR_STEP_KINDS`, `OBIX_IR_STYLE_SCOPES`, `OBIX_IR_UNARY_OPERATORS`, `checkIr`, `checkIrProvenance`, `irDifferences`, `irEqual`, `isAccessibilityAttribute`, `isIrIdentifier`, `migrateIrFromV1`, `migrateIrFromV2`, `parseIr`, `parseIrProvenance`, `serializeIr`, `serializeIrProvenance`
@@ -101,11 +99,12 @@ The architecture of OBIX — the package families and which packages are public 
 
 ## Testing
 
-- 3 test files ship in the npm package (`test/`): they are the evidence of the package's contract, published so that its verification can be read — not runtime code (no entry point reaches them).
-- Run them with `npm test` (`node --test "test/*.test.mjs"`) in the OBIX monorepo, which provides the test tooling (Node's test runner, TypeScript).
-- 2 test files are in the repository but not in the npm package, because they use the monorepo's shared test harness, oracles or fixtures:
+- 5 test files ship in the npm package (`test/`): the evidence of the package's contract, published so that its verification can be inspected — not runtime code (no entry point reaches them).
+- **Standalone**: 3 of 5 — they read nothing outside the package.
+- **Need the OBIX development / test harness**: 2 — they read the OBIX monorepo's shared harness, oracles or fixtures, so they do **not** run from an npm install or from this package's repository alone; they are shipped for inspection and provenance:
   - `test/exact.test.mjs` — reads ../../../tests/vuets/ir-sample.mjs, outside the package
   - `test/ir.test.mjs` — reads ../../../tests/vuets/ir-sample.mjs, outside the package
+- Run them with `npm test` (`node --test "test/*.test.mjs"`) in the OBIX monorepo, which provides the test tooling (Node's test runner, TypeScript) and the harness.
 
 ## Documentation
 
@@ -116,7 +115,7 @@ The architecture of OBIX — the package families and which packages are public 
 
 - https://github.com/obinexus/obix-compiler-ir — `git@github.com:obinexus/obix-compiler-ir.git`
 - Issues: https://github.com/obinexus/obix-compiler-ir/issues
-- The repository is a clean export of the package from the OBIX monorepo; its lineage (the monorepo commit it was exported from, the sources it was recovered from, earlier names) is in `PROVENANCE.json`.
+- The repository is a clean export of the package from the OBIX monorepo. Its lineage — the sources it was recovered from and its earlier names — is `PROVENANCE.json`, shipped in this package; the repository's copy also records the monorepo commit it was exported from.
 
 ## License
 
